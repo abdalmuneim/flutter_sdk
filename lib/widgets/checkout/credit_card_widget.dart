@@ -17,11 +17,10 @@ const Map<CardType, String> CardTypeIconAsset = <CardType, String>{
 };
 
 class CreditCardWidget extends StatefulWidget {
-
   CreditCardWidget(
       {Key? key,
       required this.cardNumber,
-        required this.expiryYear,
+      required this.expiryYear,
       required this.expiryMonth,
       required this.cardHolderName,
       required this.cvvCode,
@@ -43,14 +42,13 @@ class CreditCardWidget extends StatefulWidget {
       this.isSwipeGestureEnabled = true,
       this.customCardTypeIcons = const <CustomCardTypeIcon>[],
       required this.onCreditCardWidgetChange})
-      : super(key: key)
-  {
-    expiryDate = expiryMonth.toString() + "/" + expiryYear.toString();
+      : super(key: key) {
+    expiryDate = "$expiryMonth/$expiryYear";
   }
 
   final String? cardNumber;
   String? expiryDate;
-  int?  expiryMonth, expiryYear;
+  int? expiryMonth, expiryYear;
   final String? cardHolderName;
   final String? cvvCode;
   final TextStyle? textStyle;
@@ -143,9 +141,8 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
       isGestureUpdate = false;
     }
 
-    final CardType? cardType = widget.cardType != null
-        ? widget.cardType
-        : detectCCType(widget.cardNumber);
+    final CardType cardType =
+        widget.cardType ?? detectCCType(widget.cardNumber);
     widget.onCreditCardWidgetChange(CreditCardBrand(cardType));
 
     return Stack(
@@ -232,7 +229,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
   ///
   Widget _buildFrontContainer() {
     final TextStyle defaultTextStyle =
-        Theme.of(context).textTheme.headline6!.merge(
+        Theme.of(context).textTheme.titleLarge!.merge(
               const TextStyle(
                 color: Colors.white,
                 fontFamily: 'halter',
@@ -343,7 +340,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
   ///
   Widget _buildBackContainer() {
     final TextStyle defaultTextStyle =
-        Theme.of(context).textTheme.headline6!.merge(
+        Theme.of(context).textTheme.titleLarge!.merge(
               const TextStyle(
                 color: Colors.black,
                 fontFamily: 'halter',
@@ -537,8 +534,9 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
   }
 
   Widget getCardTypeImage(CardType? cardType) {
-    final List<CustomCardTypeIcon> customCardTypeIcon = getCustomCardTypeIcon(cardType!);
-    if(customCardTypeIcon.isNotEmpty){
+    final List<CustomCardTypeIcon> customCardTypeIcon =
+        getCustomCardTypeIcon(cardType!);
+    if (customCardTypeIcon.isNotEmpty) {
       return customCardTypeIcon.first.cardImage;
     } else {
       return Image.asset(
@@ -550,12 +548,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
     }
   }
 
-    // This method returns the icon for the visa card type if found
-    // else will return the empty container
+  // This method returns the icon for the visa card type if found
+  // else will return the empty container
   Widget getCardTypeIcon(String cardNumber) {
     Widget icon;
     final CardType ccType = detectCCType(cardNumber);
-    final List<CustomCardTypeIcon> customCardTypeIcon = getCustomCardTypeIcon(ccType);
+    final List<CustomCardTypeIcon> customCardTypeIcon =
+        getCustomCardTypeIcon(ccType);
     if (customCardTypeIcon.isNotEmpty) {
       icon = customCardTypeIcon.first.cardImage;
       isAmex = ccType == CardType.americanExpress;
@@ -612,7 +611,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
           break;
 
         default:
-          icon = Container(
+          icon = const SizedBox(
             height: 48,
             width: 48,
           );
@@ -751,11 +750,4 @@ class MaskedTextController extends TextEditingController {
   }
 }
 
-enum CardType {
-  otherBrand,
-  mastercard,
-  visa,
-  americanExpress,
-  discover,
-  mada
-}
+enum CardType { otherBrand, mastercard, visa, americanExpress, discover, mada }
