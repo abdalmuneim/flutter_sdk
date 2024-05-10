@@ -45,7 +45,7 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("3DS")),
+      appBar: AppBar(title: const Text("3DS")),
       body: Builder(builder: (BuildContext context) {
         return WebView(
           initialUrl: '',
@@ -54,7 +54,7 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
             _controller.complete(webViewController);
             webViewController
                 .currentUrl()
-                .then((value) => print("current url is " + value.toString()));
+                .then((value) => print("current url is $value"));
             _onLoadHtmlStringExample(webViewController, context, widget.html);
           },
           onProgress: (int progress) {
